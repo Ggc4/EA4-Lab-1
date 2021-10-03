@@ -18,16 +18,40 @@
 POP.M FILE
 % pop.m
 %
+% declaring global variables A,B
 global A
 A = 2;
 global B
 B = 1;
+% declaring initial P and final t
 Pinit=2.4;
 tfin=100;
+% Matlab default tolerance
+tol = 1*10^(-3); 
 global count
 count=0;
-[t,P] = ode45(@yprim,[0,tfin],Pinit);
-plot(t,P);
+options=odeset('RelTol',tol,'AbsTol',tol);
+[t,P] = ode45(@yprim,[0,tfin],Pinit, options);
+plot(t,P, 'black');
+
+% limiting axes
+axis([-1 101 2.399 2.417])
+
+
+hold on
+% new tolerance 
+tol=1*10^(-5);
+options=odeset('RelTol',tol,'AbsTol',tol);
+[t,P] = ode45(@yprim,[0,tfin],Pinit, options);
+plot(t,P,'red', 'LineWidth', 1);
+
+% new tolerance
+tol=1*10^(-7);
+options=odeset('RelTol',tol,'AbsTol',tol);
+[t,P] = ode45(@yprim,[0,tfin],Pinit, options);
+plot(t,P,'green', 'LineWidth', 0.5);
+
+hold off
 
 YPRIME.M FILE
 function f = yprim(t,P)
