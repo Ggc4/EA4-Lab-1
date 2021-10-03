@@ -15,6 +15,29 @@
 
 %%%% Task 4 %%%%
 
+POP.M FILE
+% pop.m
+%
+global A
+A = 2;
+global B
+B = 1;
+Pinit=2.4;
+tfin=100;
+global count
+count=0;
+[t,P] = ode45(@yprim,[0,tfin],Pinit);
+plot(t,P);
+
+YPRIME.M FILE
+function f = yprim(t,P)
+global A
+global B
+global count
+f = P*(1-P+((A*P)/(1+B*P)));
+count=count+1;
+end
+
 %%%% Task 5 %%%%
 
 %%%% Task 6 %%%%
