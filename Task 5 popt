@@ -1,0 +1,55 @@
+% popt.m
+
+% declaring global variables A0,e,w,& B
+global A0
+A0= 2;
+global e
+e= 1;
+global w
+w= 0.025;
+global B
+B = 1;
+% declaring initial P and final t
+Pinit=2.4;
+tfin= 600;
+% defining PB(a)
+a1=2;
+PB1=(B+a1-1+sqrt((B+a1-1)^2+4*B))/(2*B);
+P1_2= PB1
+a2=3;
+PB2=(B+a2-1+sqrt((B+a2-1)^2+4*B))/(2*B);
+P1_3= PB2
+
+% Matlab default tolerance
+tol = 1*10^(-3); 
+global count
+count=0;
+options=odeset('RelTol',tol,'AbsTol',tol);
+[t,P] = ode45(@yprim,[0,tfin],Pinit, options);
+plot(t,P, '-.b','LineWidth', 1.25);
+
+% limiting axes
+axis([-10 610 2.3 3.4])
+
+
+hold on
+% new tolerance 
+clear tol
+tol=1*10^(-5);
+options=odeset('RelTol',tol,'AbsTol',tol);
+[t,P] = ode45(@yprim,[0,tfin],Pinit, options);
+plot(t,P,'red', 'LineWidth', 0.5);
+
+% new tolerance
+clear tol
+tol=1*10^(-7);
+options=odeset('RelTol',tol,'AbsTol',tol);
+[t,P] = ode45(@yprim,[0,tfin],Pinit, options);
+plot(t,P,'--g', 'LineWidth', 0.5);
+yline(P1_2,"--",'P = P1(2)','LineWidth', 2);
+yline(P1_3,"--",'P = P1(3)','LineWidth', 2);
+title('Figure 3')
+xlabel('time');
+ylabel('Population');
+legend({'1*10^-7 tolerance', '1*10^-9 tolerance', '1*10^-11 tolerance'});
+hold off
